@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/generate.js"></script>
     <title>Ipssi Blog</title>
   </head>
   <body>
@@ -14,12 +15,12 @@
       <nav class="page__menu page__custom-settings menu">
         <ul class="menu__list r-list">
           <li class="menu__group">
-            <a href="/index.html" class="menu__link r-link text-underlined"
+            <a href="/index.html" class="menu__link r-link text-underlined" 
               >accueil </a
             >
           </li>
           <li class="menu__group">
-            <a href="#" class="menu__link r-link text-underlined"
+            <a  href="#"  class="menu__link r-link text-underlined" onclick="generateNewArticle()"
               >Ecrire un article</a
             >
           </li>
@@ -34,12 +35,12 @@
             >
           </li>
           <li class="menu__group">
-            <a href="/connect.html" class="menu__link r-link text-underlined"
+            <a   href="#" class="menu__link r-link text-underlined"  onclick="generateLoginForm()"
               >connexion</a
             >
           </li>
           <li class="menu__group">
-            <a href="/register.html" class="menu__link r-link text-underlined"
+            <a href="#"  class="menu__link r-link text-underlined" onclick="generateRegisterForm()"
               >inscription</a
             >
           </li>
@@ -52,7 +53,8 @@
       </nav>
     </header>
     <div class="main">
-      <div class="container accueil_articles" style="display: grid">
+    <button onclick=" generateAllArticle()">generate</button>
+    <!--  <div class="container accueil_articles" style="display: grid">
         <h1 class="center">Les articles</h1>
 
         <article class="episode">
@@ -80,6 +82,7 @@
                 struggles to fulfill her wishes while trying to keep her
                 feelings for the Princess in check.
               </p>
+              <button class="button" onclick="genereateSingleArticle(idArticle)">Page de l'article</button>
             </div>
           </div>
         </article>
@@ -336,7 +339,7 @@
             </div>
           </div>
         </article>
-      </div>
+      </div> -->
     </div>
   </body>
 </html>

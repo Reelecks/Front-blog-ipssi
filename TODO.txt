@@ -1,0 +1,41 @@
+1 ajouter newCOmment -> bouttons dans generateSingleArticle avec delete et Listeners
+generateSingleArticle -> ajouter boutons supprimerComm/SupprimerArticle
+
+
+2 lier user par authorization
+gerer permission affichage dans generate avec les roles 
+
+
+3--> affichage bouttons navbar 
+--> affichage des supprimers
+--> fix creer artucle:commentaire
+--> se déconnecter vide authorization
+--> voir des post que si on est connecté (vérifier normalememont bon -> else mettre message erreur demande connection )
+-->modifier post identique a créer      --> boutons avec les supprimer
+-->parreil pour modifier commentaire    ---->  boutons avec les supprimer
+
+--> interface admin ? 
+
+
+
+token doit etre stocker dans localStorage
+
+!!! VERIFIER CRUD -> BACK doit fonctionner  chaque fonction/routes
+!!! FILTRE -> tri query param doit fonctionner 
+
++++ ajouter filtre au front 
+
+
+garder 1h pour mise en prod
+
+temps disponible = 5h
+
+1->30min
+2->1h 
+3->2.5h
+
+3 avant pause 
+
+verif et intégration 14h
+verif 1h 
+integ 1h
