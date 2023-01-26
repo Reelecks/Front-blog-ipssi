@@ -32,17 +32,41 @@ async function submitFormRegister(e, form) {
     setTimeout(() => btnSubmit.disabled = false, 2000);
     // 2.2 Build JSON body
     const jsonFormData = buildJsonFormData(form);
+
+
+
+    fetch('http://127.0.0.1:7000/signup', {
+        method:'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: jsonFormData
+    })
+    .then(response => response.json())
+    .then(jsonFormData => {
+        console.log('success', jsonFormData)
+    })
+    .catch((error)=> {
+        console.log('Error:', error)
+    })
     // 2.3 Build Headers
-    const headers = buildHeaders();
-    // 2.4 Request & Response
-    const response = await performPostHttpRequest(`https://nd-rl-blog-api.onrender.com/signup`, headers, jsonFormData); // Uses JSON Placeholder
-    console.log(response);
-    // 2.5 Inform user of result
-    if(response)
-        console.log('enregister', response)
-       // window.location = `/success.html?FirstName=${response.FirstName}&LastName=${response.LastName}&Email=${response.Email}&id=${response.id}`;
-    else
-        alert(`An error occured.`);
+
+
+
+//     const headers = buildHeaders();
+
+
+
+//     // 2.4 Request & Response
+//     const response = await performPostHttpRequest(`https://nd-rl-blog-api.onrender.com/signup`, headers, jsonFormData); // Uses JSON Placeholder
+//     console.log(response);
+//     // 2.5 Inform user of result
+//     if(response)
+//         console.log('enregister', response)
+//        // window.location = `/success.html?FirstName=${response.FirstName}&LastName=${response.LastName}&Email=${response.Email}&id=${response.id}`;
+//     else
+//         alert(`An error occured.`);
+// }
 }
 
 function buildHeaders(authorization = null) {
