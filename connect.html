@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Ipssi Blog</title>
+  </head>
+  <body>
+    <header>
+      <nav class="page__menu page__custom-settings menu">
+        <ul class="menu__list r-list">
+          <li class="menu__group">
+            <a href="index.html" class="menu__link r-link text-underlined"
+              >accueil</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="#" class="menu__link r-link text-underlined"
+              >Ecrire un article</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="#" class="menu__link r-link text-underlined"
+              >mes articles</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="#" class="menu__link r-link text-underlined"
+              >mes commentaires</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="connect.html" class="menu__link r-link text-underlined"
+              >connexion</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="register.html" class="menu__link r-link text-underlined"
+              >inscription</a
+            >
+          </li>
+          <li class="menu__group">
+            <a href="#" class="menu__link r-link text-underlined"
+              >deconnection</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div class="main">
+      <div class="main_log">
+        <div class="log_container">
+          <div class="login_container form_container">
+            <form action="" id="connectForm">
+              <h2>Connexion</h2>
+              <div class="form-row">
+                <label for="username">User Name</label>
+                <input
+                  type="text"
+                  class="input-text input-text-block w-100"
+                  id="FirstName"
+                  name="FirstName"
+                />
+              </div>
+              <div class="form-row">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  class="input-text input-text-block w-100"
+                  id="LastName"
+                  name="LastName"
+                />
+              </div>
+              <div class="form-row mx-auto">
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+          <div
+            class="register_container form_container"
+            style="display: none"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>
