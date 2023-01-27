@@ -10,7 +10,7 @@ async function submitFormConnect(e, form) {
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
 
-  fetch("http://127.0.0.1:4000/signin", {
+  fetch("https://nd-rl-blog-api.onrender.com/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,9 +22,8 @@ async function submitFormConnect(e, form) {
       var datas = JSON.parse(JSON.stringify(jsonFormData));
       var token = datas.token;
       localStorage.setItem("token", `${token}`);
-      console.log(localStorage.getItem("token"));
       getStyle();
-      getUserConnectedRole()
+      getUserConnectedRole();
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -42,7 +41,7 @@ async function submitFormRegister(e, form) {
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
 
-  fetch("http://127.0.0.1:4000/signup", {
+  fetch("https://nd-rl-blog-api.onrender.com/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -68,10 +67,8 @@ async function submitFormNewArticle(e, form) {
   setTimeout(() => (btnSubmit.disabled = false), 2000);
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
-  console.log(JSON.stringify(jsonFormData));
-  console.log(localStorage.getItem("token"));
   token = localStorage.getItem("token");
-  fetch("http://127.0.0.1:4000/api/post", {
+  fetch("https://nd-rl-blog-api.onrender.com/api/post", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -81,7 +78,6 @@ async function submitFormNewArticle(e, form) {
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-      console.log(jsonFormData);
       generateAllArticle();
     })
     .catch((error) => {
@@ -95,9 +91,8 @@ async function submitFormNewComment(e, form, idArticle) {
   setTimeout(() => (btnSubmit.disabled = false), 2000);
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
-  console.log(JSON.stringify(jsonFormData));
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/comment/${idArticle}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/comment/${idArticle}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -107,7 +102,6 @@ async function submitFormNewComment(e, form, idArticle) {
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-      console.log(jsonFormData);
       generateSingleArticle(idArticle);
     })
     .catch((error) => {
@@ -117,7 +111,7 @@ async function submitFormNewComment(e, form, idArticle) {
 
 function deleteArticle(id) {
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/post/${id}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/post/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -134,7 +128,7 @@ function deleteArticle(id) {
 }
 function deleteComment(id) {
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/comment/${id}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/comment/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -158,7 +152,7 @@ function modifArticle(e, form, id) {
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/post/${id}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/post/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -168,7 +162,6 @@ function modifArticle(e, form, id) {
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-      console.log(jsonFormData);
       generateAllArticle();
     })
     .catch((error) => {
@@ -184,7 +177,7 @@ function modifComment(e, form, id) {
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/comment/${id}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/comment/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -194,7 +187,6 @@ function modifComment(e, form, id) {
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-      console.log(jsonFormData);
       generateAllArticle();
     })
     .catch((error) => {
@@ -224,7 +216,6 @@ function getStyle() {
   token = localStorage.getItem("token");
 
   if (localStorage.length > 0) {
-    console.log("token");
     acc.style.display = "";
     login.style.display = "none";
     register.style.display = "none";
@@ -232,7 +223,6 @@ function getStyle() {
     deconnect.style.display = "";
     generateAllArticle();
   } else {
-    console.log("pas token");
     acc.style.display = "none";
     login.style.display = "";
     register.style.display = "";
@@ -240,7 +230,6 @@ function getStyle() {
     deconnect.style.display = "none";
 
     const main = document.querySelector(".main");
-    console.log("ici");
     const h1 = document.createElement("h1");
     h1.style.color = "red";
     h1.textContent = "Vous devez être connecté pour accéder aux articles";
@@ -253,13 +242,12 @@ function deconnect() {
   localStorage.removeItem("token");
   localStorage.removeItem("role");
   localStorage.removeItem("id");
-  console.log(localStorage, "oulou");
   getStyle();
 }
 
 async function getUserConnectedRole() {
   token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/user/`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/user/`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

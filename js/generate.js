@@ -1,7 +1,7 @@
 function generateSingleArticle(id) {
   clearMain();
   var token = localStorage.getItem("token");
-  fetch(`http://127.0.0.1:4000/api/post/${id}`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/post/${id}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -10,7 +10,6 @@ function generateSingleArticle(id) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       const userConnectedRole = localStorage.getItem('role')
       const userConnectedId = localStorage.getItem('id')
 
@@ -57,7 +56,6 @@ function generateSingleArticle(id) {
       listButton.classList.add("button");
       listButton.setAttribute("onclick", `modifArticleForm('${data.id}')`);
       container_article.appendChild(divButton);
-      console.log(data.user);
       const addButton = document.createElement("button");
       addButton.innerText = "Commenter";
       addButton.style.backgroundColor = " #2ad7f6";
@@ -117,8 +115,6 @@ function generateSingleArticle(id) {
         comment_userID.textContent = comment.user.username;
         comment_date.textContent = comment.createdAt;
         comment_text.textContent = comment.texte;
-        console.log(data.user.role == "ADMIN", data.user.id == comment.userId);
-        console.log(getUserConnectedRole());
         if (userConnectedRole == "ADMIN" || userConnectedId == comment.userId) {
           comment_text.appendChild(deleteButtonComment);
           comment_text.appendChild(modifButtonComment);
@@ -134,8 +130,7 @@ function generateSingleArticle(id) {
 function generateAllArticle() {
   clearMain();
   var token = localStorage.getItem("token");
-  console.log(token);
-  fetch(`http://127.0.0.1:4000/api/post/all`, {
+  fetch(`https://nd-rl-blog-api.onrender.com/api/post/all`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
