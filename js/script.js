@@ -9,7 +9,7 @@ async function submitFormConnect(e, form) {
   setTimeout(() => (btnSubmit.disabled = false), 2000);
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
-    
+
   fetch("http://127.0.0.1:4000/signin", {
     method: "POST",
     headers: {
@@ -21,8 +21,8 @@ async function submitFormConnect(e, form) {
     .then((jsonFormData) => {
       var datas = JSON.parse(JSON.stringify(jsonFormData));
       var token = datas.token;
-      localStorage.setItem('token',`${token}`);
-      console.log(localStorage.getItem('token'))
+      localStorage.setItem("token", `${token}`);
+      console.log(localStorage.getItem("token"));
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -44,7 +44,6 @@ async function submitFormRegister(e, form) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      
     },
     body: JSON.stringify(jsonFormData),
   })
@@ -52,7 +51,7 @@ async function submitFormRegister(e, form) {
     .then((jsonFormData) => {
       var datas = JSON.parse(JSON.stringify(jsonFormData));
       var token = datas.token;
-      localStorage.setItem('token',`${token}`);
+      localStorage.setItem("token", `${token}`);
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -66,23 +65,24 @@ async function submitFormNewArticle(e, form) {
   setTimeout(() => (btnSubmit.disabled = false), 2000);
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
-  console.log(JSON.stringify(jsonFormData))
-  token = localStorage.getItem('token')
-  fetch("http//127.0.0.1:4000/api/post", {
+  console.log(JSON.stringify(jsonFormData));
+  console.log(localStorage.getItem("token"));
+  token = localStorage.getItem("token");
+  fetch("http://127.0.0.1:4000/api/post", {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify(jsonFormData),
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-console.log(jsonFormData)
+      console.log(jsonFormData);
     })
     .catch((error) => {
-        console.log("Error:", error);
-      });
+      console.log("Error:", error);
+    });
 }
 async function submitFormNewComment(e, form, idArticle) {
   e.preventDefault();
@@ -91,23 +91,23 @@ async function submitFormNewComment(e, form, idArticle) {
   setTimeout(() => (btnSubmit.disabled = false), 2000);
   // 2.2 Build JSON body
   const jsonFormData = buildJsonFormData(form);
-  console.log(JSON.stringify(jsonFormData))
-  token = localStorage.getItem('token')
-  fetch(`http//127.0.0.1:4000/api/comment/${idArticle}`, {
+  console.log(JSON.stringify(jsonFormData));
+  token = localStorage.getItem("token");
+  fetch(`http://127.0.0.1:4000/api/comment/${idArticle}`, {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify(jsonFormData),
   })
     .then((response) => response.json())
     .then((jsonFormData) => {
-console.log(jsonFormData)
+      console.log(jsonFormData);
     })
     .catch((error) => {
-        console.log("Error:", error);
-      });
+      console.log("Error:", error);
+    });
 }
 
 function buildJsonFormData(form) {
@@ -117,9 +117,6 @@ function buildJsonFormData(form) {
   }
   return jsonFormData;
 }
-
-
-
 
 /*--Event Listeners--*/
 const connectForm = document.querySelector("#connectForm");

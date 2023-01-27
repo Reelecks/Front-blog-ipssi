@@ -3,8 +3,8 @@ function generateSingleArticle(id) {
   var token = localStorage.getItem('token')
   fetch(`http://127.0.0.1:4000/api/post/${id}`, {
     method: "GET",
-    header: {
-      'Authorization': `Bearer ${token}`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     credentials: "include",
@@ -124,7 +124,7 @@ function generateAllArticle() {
   console.log(token)
   fetch(`http://127.0.0.1:4000/api/post/all`, {
     method: "GET",
-    header: {
+    headers: {
       'Authorization': `Bearer ${token}`,
       "Content-Type": "application/json",
     },
