@@ -1,10 +1,12 @@
 1 ajouter newCOmment -> bouttons dans generateSingleArticle avec delete et Listeners
 generateSingleArticle -> ajouter boutons supprimerComm/SupprimerArticle
 
+rretour a la list devient modifer
+
 
 2 lier user par authorization
 gerer permission affichage dans generate avec les roles 
-
+redirection connection
 
 3--> affichage bouttons navbar 
 --> affichage des supprimers

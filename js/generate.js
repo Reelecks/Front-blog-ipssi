@@ -1,9 +1,10 @@
 function generateSingleArticle(id) {
   clearMain();
+  var token = localStorage.getItem('token')
   fetch(`http://127.0.0.1:4000/api/post/${id}`, {
     method: "GET",
     header: {
-      Authorization: document.cookie,
+      'Authorization': `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     credentials: "include",
@@ -46,16 +47,26 @@ function generateSingleArticle(id) {
       deleteButton.classList.add("button");
       deleteButton.innerText = "Supprimer";
       deleteButton.style.backgroundColor = "red";
-      deleteButton.setAttribute("onclick", ``);
+      deleteButton.setAttribute("onclick", ``); //ici delete article
 
       const listButton = document.createElement("button");
-      listButton.innerText = "Retour à la liste";
+      listButton.innerText = "Modifier";
       listButton.style.backgroundColor = " #422af6";
       listButton.classList.add("button");
       listButton.setAttribute("onclick", `generateAllArticle()`);
       container_article.appendChild(divButton);
       divButton.appendChild(deleteButton);
       divButton.appendChild(listButton);
+
+      const addButton = document.createElement("button");
+      addButton.innerText = "Commenter";
+      addButton.style.backgroundColor = " #2ad7f6";
+      addButton.classList.add("button");
+      addButton.setAttribute("onclick", `generateNewComment('${data.id}')`);
+      container_article.appendChild(divButton);
+      divButton.appendChild(deleteButton);
+      divButton.appendChild(addButton);
+
       for (comment of data.Comments) {
         let comment_container = document.createElement("div");
         comment_container.classList.add("comments_container");
@@ -73,6 +84,20 @@ function generateSingleArticle(id) {
         comment_infos.classList.add("comments_infos");
 
         let comment_fill = document.createElement("div");
+
+        const deleteButtonComment = document.createElement("button");
+        deleteButtonComment.classList.add("button");
+        deleteButtonComment.innerText = "Supprimer";
+        deleteButtonComment.style.backgroundColor = "red";
+        deleteButtonComment.setAttribute("onclick", ``); //ici delete comment
+
+
+        const modifButtonComment = document.createElement("button");
+        modifButtonComment.classList.add("button");
+        modifButtonComment.innerText = "Modifier";
+        modifButtonComment.style.backgroundColor = "#422af6";
+        modifButtonComment.setAttribute("onclick", ``); //ici modif comment
+        
         comment_fill.classList.add("comments_fill");
         comment_container.appendChild(comment_fill);
         comment_fill.appendChild(comment_infos);
@@ -82,6 +107,9 @@ function generateSingleArticle(id) {
         comment_userID.textContent = comment.user.username;
         comment_date.textContent = comment.createdAt;
         comment_text.textContent = comment.texte;
+        
+        comment_text.appendChild(deleteButtonComment)
+        comment_text.appendChild(modifButtonComment)
         document.querySelector(".main").appendChild(comment_container);
       }
     })
@@ -92,10 +120,12 @@ function generateSingleArticle(id) {
 
 function generateAllArticle() {
   clearMain();
+  var token = localStorage.getItem('token')
+  console.log(token)
   fetch(`http://127.0.0.1:4000/api/post/all`, {
     method: "GET",
     header: {
-      Authorization: document.cookie,
+      'Authorization': `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     credentials: "include",
@@ -411,6 +441,70 @@ function generateNewArticle() {
   if (registerForm) {
     registerForm.addEventListener("submit", function (e) {
       submitFormNewArticle(e, this);
+    });
+  }
+}
+function generateNewComment(idArticle) {
+  clearMain()
+  const mainNewComment = document.createElement("div");
+  mainNewComment.classList.add("main_newComment");
+
+  const newCommentContainer = document.createElement("div");
+  newCommentContainer.classList.add("newComment_container");
+  newCommentContainer.style.margin='2em 10em 2em 10em'
+  mainNewComment.appendChild(newCommentContainer);
+
+  const commentContainer = document.createElement("div");
+  commentContainer.classList.add("comment_container", "form_container");
+  newCommentContainer.appendChild(commentContainer);
+
+  const form = document.createElement("form");
+  form.setAttribute("action", "");
+  form.setAttribute("id", "newCommentForm");
+  commentContainer.appendChild(form);
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "Nouveau commentaire";
+  form.appendChild(h2);
+
+  const formRow1 = document.createElement("div");
+  formRow1.classList.add("form-row");
+  form.appendChild(formRow1);
+
+  const formRow2 = document.createElement("div");
+  formRow2.classList.add("form-row");
+  form.appendChild(formRow2);
+
+  const label2 = document.createElement("label");
+  label2.setAttribute("for", "text");
+  label2.textContent = "Texte du commentaire";
+  formRow2.appendChild(label2);
+
+  const input2 = document.createElement("textarea");
+  input2.setAttribute("type", "text");
+  input2.classList.add("input-text", "input-text-block", "w-100");
+  input2.setAttribute("id", "text");
+  input2.setAttribute("name", "text");
+  input2.style.minHeight='15em'
+  formRow2.appendChild(input2);
+
+  const formRow3 = document.createElement("div");
+  formRow3.classList.add("form-row", "mx-auto");
+  form.appendChild(formRow3);
+
+  const button = document.createElement("button");
+  button.setAttribute("type", "submit");
+  button.classList.add("btn-submit");
+  button.setAttribute("id", "btnSubmit");
+  button.textContent = "Submit";
+  formRow3.appendChild(button);
+
+  let main = document.querySelector(".main");
+  main.appendChild(mainNewComment);
+  const registerForm = document.querySelector("#newCommentForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
+      submitFormNewComment(e, this, idArticle);
     });
   }
 }
