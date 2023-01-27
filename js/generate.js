@@ -1,17 +1,19 @@
 function generateSingleArticle(id) {
   clearMain();
-  var token = localStorage.getItem('token')
+  var token = localStorage.getItem("token");
   fetch(`http://127.0.0.1:4000/api/post/${id}`, {
     method: "GET",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    credentials: "include",
   })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      const userConnectedRole = localStorage.getItem('role')
+      const userConnectedId = localStorage.getItem('id')
+
       const single_article = document.createElement("div");
       single_article.classList.add("single_article");
       single_article.style.display = "flex";
@@ -47,25 +49,28 @@ function generateSingleArticle(id) {
       deleteButton.classList.add("button");
       deleteButton.innerText = "Supprimer";
       deleteButton.style.backgroundColor = "red";
-      deleteButton.setAttribute("onclick", ``); //ici delete article
+      deleteButton.setAttribute("onclick", `deleteArticle('${data.id}')`);
 
       const listButton = document.createElement("button");
       listButton.innerText = "Modifier";
       listButton.style.backgroundColor = " #422af6";
       listButton.classList.add("button");
-      listButton.setAttribute("onclick", `generateAllArticle()`);
+      listButton.setAttribute("onclick", `modifArticleForm('${data.id}')`);
       container_article.appendChild(divButton);
-      divButton.appendChild(deleteButton);
-      divButton.appendChild(listButton);
-
+      console.log(data.user);
       const addButton = document.createElement("button");
       addButton.innerText = "Commenter";
       addButton.style.backgroundColor = " #2ad7f6";
       addButton.classList.add("button");
       addButton.setAttribute("onclick", `generateNewComment('${data.id}')`);
       container_article.appendChild(divButton);
-      divButton.appendChild(deleteButton);
       divButton.appendChild(addButton);
+
+      if (userConnectedRole == "ADMIN" || userConnectedId == data.userId) {
+        divButton.appendChild(listButton);
+        divButton.appendChild(deleteButton);
+        divButton.appendChild(deleteButton);
+      }
 
       for (comment of data.Comments) {
         let comment_container = document.createElement("div");
@@ -89,15 +94,20 @@ function generateSingleArticle(id) {
         deleteButtonComment.classList.add("button");
         deleteButtonComment.innerText = "Supprimer";
         deleteButtonComment.style.backgroundColor = "red";
-        deleteButtonComment.setAttribute("onclick", ``); //ici delete comment
-
+        deleteButtonComment.setAttribute(
+          "onclick",
+          `deleteComment('${comment.id}')`
+        );
 
         const modifButtonComment = document.createElement("button");
         modifButtonComment.classList.add("button");
         modifButtonComment.innerText = "Modifier";
         modifButtonComment.style.backgroundColor = "#422af6";
-        modifButtonComment.setAttribute("onclick", ``); //ici modif comment
-        
+        modifButtonComment.setAttribute(
+          "onclick",
+          `modifCommentForm('${comment.id}')`
+        );
+
         comment_fill.classList.add("comments_fill");
         comment_container.appendChild(comment_fill);
         comment_fill.appendChild(comment_infos);
@@ -107,9 +117,12 @@ function generateSingleArticle(id) {
         comment_userID.textContent = comment.user.username;
         comment_date.textContent = comment.createdAt;
         comment_text.textContent = comment.texte;
-        
-        comment_text.appendChild(deleteButtonComment)
-        comment_text.appendChild(modifButtonComment)
+        console.log(data.user.role == "ADMIN", data.user.id == comment.userId);
+        console.log(getUserConnectedRole());
+        if (userConnectedRole == "ADMIN" || userConnectedId == comment.userId) {
+          comment_text.appendChild(deleteButtonComment);
+          comment_text.appendChild(modifButtonComment);
+        }
         document.querySelector(".main").appendChild(comment_container);
       }
     })
@@ -120,15 +133,14 @@ function generateSingleArticle(id) {
 
 function generateAllArticle() {
   clearMain();
-  var token = localStorage.getItem('token')
-  console.log(token)
+  var token = localStorage.getItem("token");
+  console.log(token);
   fetch(`http://127.0.0.1:4000/api/post/all`, {
     method: "GET",
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    credentials: "include",
   })
     .then((response) => response.json())
     .then((data) => {
@@ -198,9 +210,8 @@ function generateAllArticle() {
       console.log("Error:", error);
     });
 }
-function deleteArticle() {}
 function generateLoginForm() {
-  clearMain()
+  clearMain();
   let mainLog = document.createElement("div");
   mainLog.classList.add("main_log");
 
@@ -277,7 +288,7 @@ function generateLoginForm() {
 }
 
 function generateRegisterForm() {
-  clearMain()
+  clearMain();
   const mainLog = document.createElement("div");
   mainLog.classList.add("main_log");
 
@@ -368,13 +379,13 @@ function generateRegisterForm() {
 }
 
 function generateNewArticle() {
-  clearMain()
+  clearMain();
   const mainNewArticle = document.createElement("div");
   mainNewArticle.classList.add("main_newArticle");
 
   const newArticleContainer = document.createElement("div");
   newArticleContainer.classList.add("newArticle_container");
-  newArticleContainer.style.margin='2em 10em 2em 10em'
+  newArticleContainer.style.margin = "2em 10em 2em 10em";
   mainNewArticle.appendChild(newArticleContainer);
 
   const articleContainer = document.createElement("div");
@@ -403,7 +414,7 @@ function generateNewArticle() {
   input1.setAttribute("type", "text");
   input1.classList.add("input-text", "input-text-block", "w-100");
   input1.setAttribute("id", "title");
-  input1.style.marginBottom ='2em'
+  input1.style.marginBottom = "2em";
   input1.setAttribute("name", "title");
   formRow1.appendChild(input1);
 
@@ -421,7 +432,7 @@ function generateNewArticle() {
   input2.classList.add("input-text", "input-text-block", "w-100");
   input2.setAttribute("id", "text");
   input2.setAttribute("name", "text");
-  input2.style.minHeight='15em'
+  input2.style.minHeight = "15em";
   formRow2.appendChild(input2);
 
   const formRow3 = document.createElement("div");
@@ -445,13 +456,13 @@ function generateNewArticle() {
   }
 }
 function generateNewComment(idArticle) {
-  clearMain()
+  clearMain();
   const mainNewComment = document.createElement("div");
   mainNewComment.classList.add("main_newComment");
 
   const newCommentContainer = document.createElement("div");
   newCommentContainer.classList.add("newComment_container");
-  newCommentContainer.style.margin='2em 10em 2em 10em'
+  newCommentContainer.style.margin = "2em 10em 2em 10em";
   mainNewComment.appendChild(newCommentContainer);
 
   const commentContainer = document.createElement("div");
@@ -476,16 +487,16 @@ function generateNewComment(idArticle) {
   form.appendChild(formRow2);
 
   const label2 = document.createElement("label");
-  label2.setAttribute("for", "text");
+  label2.setAttribute("for", "texte");
   label2.textContent = "Texte du commentaire";
   formRow2.appendChild(label2);
 
   const input2 = document.createElement("textarea");
   input2.setAttribute("type", "text");
   input2.classList.add("input-text", "input-text-block", "w-100");
-  input2.setAttribute("id", "text");
-  input2.setAttribute("name", "text");
-  input2.style.minHeight='15em'
+  input2.setAttribute("id", "texte");
+  input2.setAttribute("name", "texte");
+  input2.style.minHeight = "15em";
   formRow2.appendChild(input2);
 
   const formRow3 = document.createElement("div");
@@ -513,5 +524,148 @@ function clearMain() {
   const main = document.querySelector(".main");
   while (main.firstChild) {
     main.removeChild(main.firstChild);
+  }
+}
+
+function modifArticleForm(idArticle) {
+  clearMain();
+  const mainNewArticle = document.createElement("div");
+  mainNewArticle.classList.add("main_newArticle");
+
+  const newArticleContainer = document.createElement("div");
+  newArticleContainer.classList.add("newArticle_container");
+  newArticleContainer.style.margin = "2em 10em 2em 10em";
+  mainNewArticle.appendChild(newArticleContainer);
+
+  const articleContainer = document.createElement("div");
+  articleContainer.classList.add("article_container", "form_container");
+  newArticleContainer.appendChild(articleContainer);
+
+  const form = document.createElement("form");
+  form.setAttribute("action", "");
+  form.setAttribute("id", "modifArticleForm");
+  articleContainer.appendChild(form);
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "Modification Article";
+  form.appendChild(h2);
+
+  const formRow1 = document.createElement("div");
+  formRow1.classList.add("form-row");
+  form.appendChild(formRow1);
+
+  const label1 = document.createElement("label");
+  label1.setAttribute("for", "title");
+  label1.textContent = "Titre";
+  formRow1.appendChild(label1);
+
+  const input1 = document.createElement("input");
+  input1.setAttribute("type", "text");
+  input1.classList.add("input-text", "input-text-block", "w-100");
+  input1.setAttribute("id", "title");
+  input1.style.marginBottom = "2em";
+  input1.setAttribute("name", "title");
+  formRow1.appendChild(input1);
+
+  const formRow2 = document.createElement("div");
+  formRow2.classList.add("form-row");
+  form.appendChild(formRow2);
+
+  const label2 = document.createElement("label");
+  label2.setAttribute("for", "text");
+  label2.textContent = "Texte de L'article";
+  formRow2.appendChild(label2);
+
+  const input2 = document.createElement("textarea");
+  input2.setAttribute("type", "text");
+  input2.classList.add("input-text", "input-text-block", "w-100");
+  input2.setAttribute("id", "text");
+  input2.setAttribute("name", "text");
+  input2.style.minHeight = "15em";
+  formRow2.appendChild(input2);
+
+  const formRow3 = document.createElement("div");
+  formRow3.classList.add("form-row", "mx-auto");
+  form.appendChild(formRow3);
+
+  const button = document.createElement("button");
+  button.setAttribute("type", "submit");
+  button.classList.add("btn-submit");
+  button.setAttribute("id", "btnSubmit");
+  button.textContent = "Submit";
+  formRow3.appendChild(button);
+
+  let main = document.querySelector(".main");
+  main.appendChild(mainNewArticle);
+  const registerForm = document.querySelector("#modifArticleForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
+      modifArticle(e, this, idArticle);
+    });
+  }
+}
+
+function modifCommentForm(idComment) {
+  clearMain();
+  const mainNewComment = document.createElement("div");
+  mainNewComment.classList.add("main_newComment");
+
+  const newCommentContainer = document.createElement("div");
+  newCommentContainer.classList.add("newComment_container");
+  newCommentContainer.style.margin = "2em 10em 2em 10em";
+  mainNewComment.appendChild(newCommentContainer);
+
+  const commentContainer = document.createElement("div");
+  commentContainer.classList.add("comment_container", "form_container");
+  newCommentContainer.appendChild(commentContainer);
+
+  const form = document.createElement("form");
+  form.setAttribute("action", "");
+  form.setAttribute("id", "modifCommentForm");
+  commentContainer.appendChild(form);
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "Modifier commentaire";
+  form.appendChild(h2);
+
+  const formRow1 = document.createElement("div");
+  formRow1.classList.add("form-row");
+  form.appendChild(formRow1);
+
+  const formRow2 = document.createElement("div");
+  formRow2.classList.add("form-row");
+  form.appendChild(formRow2);
+
+  const label2 = document.createElement("label");
+  label2.setAttribute("for", "texte");
+  label2.textContent = "Texte du commentaire";
+  formRow2.appendChild(label2);
+
+  const input2 = document.createElement("textarea");
+  input2.setAttribute("type", "text");
+  input2.classList.add("input-text", "input-text-block", "w-100");
+  input2.setAttribute("id", "texte");
+  input2.setAttribute("name", "texte");
+  input2.style.minHeight = "15em";
+  formRow2.appendChild(input2);
+
+  const formRow3 = document.createElement("div");
+  formRow3.classList.add("form-row", "mx-auto");
+  form.appendChild(formRow3);
+
+  const button = document.createElement("button");
+  button.setAttribute("type", "submit");
+  button.classList.add("btn-submit");
+  button.setAttribute("id", "btnSubmit");
+  button.textContent = "Submit";
+  formRow3.appendChild(button);
+
+  let main = document.querySelector(".main");
+  main.appendChild(mainNewComment);
+  const registerForm = document.querySelector("#modifCommentForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
+      modifComment(e, this, idComment);
+    });
   }
 }
